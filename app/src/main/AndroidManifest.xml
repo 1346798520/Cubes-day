@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_launcher_background"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FinalProject"
+        android:theme="@style/Theme.CubesNote"
         tools:targetApi="31" >
         <activity
             android:name=".MainActivity"

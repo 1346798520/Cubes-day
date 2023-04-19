@@ -1,4 +1,4 @@
-package hk.hku.cs.finalproject;
+package hk.hku.cs.cubesnote.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 

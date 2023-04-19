@@ -1,4 +1,4 @@
-package hk.hku.cs.finalproject;
+package hk.hku.cs.cubesnote;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("hk.hku.cs.finalproject", appContext.getPackageName());
+        assertEquals("hk.hku.cs.cubesnote", appContext.getPackageName());
     }
 }
