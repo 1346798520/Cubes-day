@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 
+import hk.hku.cs.cubesnote.R;
+
 public class Calendar extends AppCompatActivity {
     private ImageButton popBtn;
     private ImageButton setBtn;

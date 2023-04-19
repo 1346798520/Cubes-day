@@ -12,7 +12,7 @@
         android:theme="@style/Theme.CubesNote"
         tools:targetApi="31" >
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,9 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".addEvent"></activity>
-        <activity android:name=".Calendar"></activity>
-        <activity android:name=".treemapSet"></activity>
+        <activity android:name=".ui.addEvent"></activity>
+        <activity android:name=".ui.Calendar"></activity>
+        <activity android:name=".ui.treemapSet"></activity>
     </application>
 
 </manifest>

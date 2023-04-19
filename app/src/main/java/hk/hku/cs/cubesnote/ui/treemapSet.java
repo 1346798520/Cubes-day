@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import hk.hku.cs.cubesnote.R;
+
 public class treemapSet extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
