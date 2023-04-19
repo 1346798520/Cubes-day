@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#e6e6e6"
+    android:fillViewport="false">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".treemapSet"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_55sdp"
+            android:background="#3d5c87"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp">
+            <Button android:id="@+id/cancelBtn"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@android:color/transparent"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:text="Cancel"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <Button android:id="@+id/saveBtn"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@android:color/transparent"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:text="Save" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_80sdp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="Importance Level"
+            android:padding="@dimen/_20sdp" />
+        <Spinner
+            android:id="@+id/importance_spinner"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginLeft="@dimen/_220sdp"
+            android:background="@drawable/square"
+            android:padding="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_95sdp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_120sdp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="Emergency Level"
+            android:padding="@dimen/_20sdp" />
+        <Spinner
+            android:id="@+id/emergency_spinner"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginLeft="@dimen/_220sdp"
+            android:background="@drawable/square"
+            android:padding="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_140sdp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_160sdp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="Showing Start"
+            android:padding="@dimen/_20sdp" />
+        <Button
+            android:id="@+id/sDateBtn"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_marginLeft="@dimen/_145sdp"
+            android:layout_marginTop="@dimen/_172sdp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="9/4/2023"
+            style="?android:spinnerStyle" />
+        <Button
+            android:id="@+id/sTimeBtn"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_marginLeft="@dimen/_230sdp"
+            android:layout_marginTop="@dimen/_172sdp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="00:00"
+            style="?android:spinnerStyle" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_200sdp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="Showing End"
+            android:padding="@dimen/_20sdp" />
+        <Button
+            android:id="@+id/eDateBtn"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_marginLeft="@dimen/_145sdp"
+            android:layout_marginTop="@dimen/_210sdp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="24/4/2023"
+            style="?android:spinnerStyle" />
+        <Button
+            android:id="@+id/eTimeBtn"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_marginLeft="@dimen/_230sdp"
+            android:layout_marginTop="@dimen/_210sdp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="22:00"
+            style="?android:spinnerStyle" />
+        <Switch
+            android:id="@+id/treeSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_55sdp"
+            android:layout_marginLeft="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_240sdp"
+            android:text="Linear Emergency"
+            android:switchMinWidth="@dimen/_20sdp"
+            android:textSize="18sp"
+            android:thumb="@drawable/selector_thumb"
+            android:track="@drawable/selector_track" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_280sdp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="Beginning"
+            android:padding="@dimen/_20sdp" />
+        <Button
+            android:id="@+id/beginDateButton"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_marginLeft="@dimen/_200sdp"
+            android:layout_marginTop="@dimen/_293sdp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="16/4/2023"
+            style="?android:spinnerStyle" />
+    </RelativeLayout>
+</ScrollView>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/pop_panel">
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_60sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="COMP7606A Presentation"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_80sdp"
+        android:textSize="18sp"
+        android:text="Start Time" />
+    <TextView
+        android:id="@+id/startInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginLeft="@dimen/_105sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_80sdp"
+        android:textSize="18sp"
+        android:text="24/4/2023 19:00" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_110sdp"
+        android:textSize="18sp"
+        android:text="End Time" />
+    <TextView
+        android:id="@+id/endInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginLeft="@dimen/_105sdp"
+        android:layout_marginTop="@dimen/_110sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:textSize="18sp"
+        android:text="24/4/2023 19:00" />
+    <TextView
+        android:id="@+id/note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#b5b5b5"
+        android:textSize="18sp"
+        android:layout_marginTop="@dimen/_140sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:text="Group Presentation" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_200sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:textSize="18sp"
+        android:text="Importance Level"/>
+    <TextView
+        android:id="@+id/imLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_200sdp"
+        android:layout_marginLeft="@dimen/_200sdp"
+        android:layout_marginRight="@dimen/_25sdp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="5"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_230sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:textSize="18sp"
+        android:text="Emergency Level"/>
+    <TextView
+        android:id="@+id/emLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_230sdp"
+        android:layout_marginLeft="@dimen/_200sdp"
+        android:layout_marginRight="@dimen/_25sdp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="5"/>
+    <ImageButton
+        android:id="@+id/leftBtn"
+        android:background="@drawable/left"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_290sdp"
+        android:layout_marginBottom="@dimen/_20sdp"/>
+    <ImageButton
+        android:id="@+id/pencilBtn"
+        android:background="@drawable/pencil"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:gravity="right"
+        android:layout_marginTop="@dimen/_290sdp"
+        android:layout_marginLeft="@dimen/_200sdp"
+        android:layout_marginRight="@dimen/_25sdp"
+        android:layout_marginBottom="@dimen/_20sdp"/>
+</RelativeLayout>

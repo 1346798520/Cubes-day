@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/pop_panel"
+    android:fillViewport="false" >
+    <ImageButton
+        android:id="@+id/redBtn"
+        android:background="@drawable/red_square"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_60sdp" />
+    <ImageButton
+        android:id="@+id/blueBtn"
+        android:background="@drawable/blue_square"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="@dimen/_60sdp"
+        android:layout_marginTop="@dimen/_60sdp" />
+    <ImageButton
+        android:id="@+id/yellowBtn"
+        android:background="@drawable/yellow_square"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="@dimen/_100sdp"
+        android:layout_marginTop="@dimen/_60sdp" />
+    <ImageButton
+        android:id="@+id/greenBtn"
+        android:background="@drawable/green_square"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="@dimen/_140sdp"
+        android:layout_marginTop="@dimen/_60sdp" />
+    <ImageButton
+        android:id="@+id/blackBtn"
+        android:background="@drawable/black_square"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="@dimen/_180sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_60sdp" />
+    <Switch
+        android:id="@+id/dafSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_55sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_130sdp"
+        android:text="Date and Festival"
+        android:switchMinWidth="@dimen/_30sdp"
+        android:textSize="18sp"
+        android:thumb="@drawable/selector_thumb"
+        android:track="@drawable/selector_track" />
+    <Switch
+        android:id="@+id/awSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_55sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_190sdp"
+        android:text="Date and Festival"
+        android:switchMinWidth="@dimen/_30sdp"
+        android:textSize="18sp"
+        android:thumb="@drawable/selector_thumb"
+        android:track="@drawable/selector_track" />
+    <TextView
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_140sdp"
+        android:layout_marginLeft="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_400sdp"
+        android:layout_marginBottom="@dimen/_50sdp"
+        android:background="@drawable/blue_rec" />
+</RelativeLayout>
