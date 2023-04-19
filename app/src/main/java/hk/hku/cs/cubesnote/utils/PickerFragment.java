@@ -13,8 +13,23 @@ import androidx.fragment.app.DialogFragment;
 import java.util.Calendar;
 
 public class PickerFragment {
+
+    public interface TimeCallerButton {
+        void onTimeSet(TimePicker view, int hourOfDay, int minute);
+    }
+
+    public interface DateCallerButton {
+        void onDateSet(DatePicker view, int year, int month, int day);
+    }
+
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
+
+        private DateCallerButton caller;
+
+        public DatePickerFragment(DateCallerButton caller) {
+            this.caller = caller;
+        }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -29,12 +44,18 @@ public class PickerFragment {
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            // Do something with the date chosen by the user
+            caller.onDateSet(view, year, month, day);
         }
     }
 
     public static class TimePickerFragment extends DialogFragment
             implements TimePickerDialog.OnTimeSetListener {
+
+        private TimeCallerButton caller;
+
+        public TimePickerFragment(TimeCallerButton caller) {
+            this.caller = caller;
+        }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -50,6 +71,7 @@ public class PickerFragment {
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             // Do something with the time chosen by the user
+            caller.onTimeSet(view, hourOfDay, minute);
         }
     }
 
