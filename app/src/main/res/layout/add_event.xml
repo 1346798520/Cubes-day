@@ -36,8 +36,8 @@
                 android:textSize="18sp"
                 android:text="Save" />
         </LinearLayout>
-        <TextView
-            android:id="@+id/panel1"
+        <EditText
+            android:id="@+id/eventTitle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_60sdp"
             android:layout_marginLeft="@dimen/_20sdp"
@@ -46,9 +46,11 @@
             android:background="@drawable/panel"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="COMP7606 Presentation"
+            android:hint="Title"
+            android:inputType="text"
+            android:scrollbars = "vertical"
             android:padding="@dimen/_20sdp" />
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/eventSwitch"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_55sdp"
@@ -123,7 +125,7 @@
             android:textSize="18sp"
             android:text="22:00"
             style="?android:spinnerStyle" />
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/countSwitch"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_55sdp"
@@ -145,8 +147,8 @@
             android:textSize="18sp"
             android:text="Remarks"
             android:padding="@dimen/_15sdp" />
-        <TextView
-            android:id="@+id/panel2"
+        <EditText
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_60sdp"
             android:layout_marginLeft="@dimen/_20sdp"
@@ -155,9 +157,9 @@
             android:background="@drawable/panel"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="Group Presentation"
+            android:hint="Description"
             android:padding="@dimen/_20sdp" />
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/treeSwitch"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_55sdp"
