@@ -61,4 +61,37 @@ public class Jsonfy {
             jsonObject.put("treemapConfig", toJson(c.getTreemapConfig()));
         return jsonObject;
     }
+
+    public static CubeEvent jsonToCubeEvent(JSONObject jsonObject) throws JSONException {
+        CubeEvent cubeEvent = new CubeEvent(
+                stringToCalendar(jsonObject.getString("selectedStartCalendar")),
+                stringToCalendar(jsonObject.getString("selectedEndCalendar"))
+        );
+        cubeEvent.setId(jsonObject.getString("id"));
+        cubeEvent.setAllDay(jsonObject.getBoolean("isAllDay"));
+        cubeEvent.setCountingDays(jsonObject.getBoolean("isCountingDays"));
+        cubeEvent.setTitle(jsonObject.getString("title"));
+        cubeEvent.setDescription(jsonObject.getString("Description"));
+        cubeEvent.setShownInTreeMap(jsonObject.getBoolean("isShownInTreeMap"));
+        if(jsonObject.getBoolean("isShownInTreeMap")) {
+            cubeEvent.setTreemapConfig(jsonToTreemapConfig(jsonObject.getJSONObject("treemapConfig")));
+        } else {
+            cubeEvent.setTreemapConfig(null);
+        }
+        return cubeEvent;
+    }
+
+    public static CubeEventTreemapConfig jsonToTreemapConfig(JSONObject jsonObject) throws JSONException {
+        CubeEventTreemapConfig cfg = new CubeEventTreemapConfig(
+                stringToCalendar(jsonObject.get("start").toString()),
+                stringToCalendar(jsonObject.get("end").toString()),
+                null
+        );
+        cfg.setImportance(jsonObject.getInt("importance"));
+        cfg.setEmergency(jsonObject.getInt("emergency"));
+        cfg.setLinearEmergency(jsonObject.getBoolean("linearEmergency"));
+        if(jsonObject.getBoolean("linearEmergency"))
+            cfg.setLinearEmergencyBegin(stringToCalendar(jsonObject.getString("linearEmergencyBegin")));
+        return cfg;
+    }
 }
