@@ -9,10 +9,10 @@ import java.util.UUID;
 import hk.hku.cs.cubesnote.utils.Jsonfy;
 
 public class CubeEvent {
-    private String id;
 
-    private java.util.Calendar selectedStartCalendar = Calendar.getInstance();
-    private java.util.Calendar selectedEndCalendar = Calendar.getInstance();
+    private String id;
+    private java.util.Calendar selectedStartCalendar;
+    private java.util.Calendar selectedEndCalendar;
     private Boolean isAllDay;
     private Boolean isCountingDays;
     private Boolean isShownInTreeMap;
@@ -20,9 +20,13 @@ public class CubeEvent {
     private String Description;
     private CubeEventTreemapConfig treemapConfig;
 
-    public CubeEvent() {
+    public CubeEvent(Calendar start, Calendar end) {
         this.id = UUID.randomUUID().toString();
-        // TODO: default value if not configured?
+        this.isAllDay = false;
+        this.isCountingDays = false;
+        this.isShownInTreeMap = false;
+        this.selectedStartCalendar = start;
+        this.selectedEndCalendar = end;
     }
 
     public JSONObject toJson() throws JSONException {

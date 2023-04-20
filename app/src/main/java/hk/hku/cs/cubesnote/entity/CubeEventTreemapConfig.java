@@ -1,5 +1,10 @@
 package hk.hku.cs.cubesnote.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,7 +12,7 @@ import java.util.Calendar;
 
 import hk.hku.cs.cubesnote.utils.Jsonfy;
 
-public class CubeEventTreemapConfig {
+public class CubeEventTreemapConfig  implements Parcelable {
     private int importance;
     private int emergency;
     private java.util.Calendar start;
@@ -67,5 +72,15 @@ public class CubeEventTreemapConfig {
 
     public void setLinearEmergencyBegin(Calendar linearEmergencyBegin) {
         this.linearEmergencyBegin = linearEmergencyBegin;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+
     }
 }

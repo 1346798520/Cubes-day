@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import hk.hku.cs.cubesnote.R;
+import hk.hku.cs.cubesnote.entity.CubeEventTreemapConfig;
 
 public class treemapSet extends AppCompatActivity {
     @Override
@@ -23,6 +24,16 @@ public class treemapSet extends AppCompatActivity {
                 Intent intent = new Intent(treemapSet.this, addEvent.class);
                 startActivity(intent);
             }
+        });
+        Button saveBtn = (Button) findViewById(R.id.saveBtn);
+        saveBtn.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            // TODO: construct and return CubeEventTreemapConfig
+            CubeEventTreemapConfig cfg = null;
+             intent.putExtra("treemapConfig", cfg);
+            intent.putExtra("data", "cfg!!!");
+            setResult(RESULT_OK, intent);
+            finish();
         });
         Spinner importance_spinner = (Spinner) findViewById(R.id.importance_spinner);
         ArrayAdapter<String>  importance_Adapter = new ArrayAdapter<>(treemapSet.this,

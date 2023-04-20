@@ -81,7 +81,6 @@
             android:layout_marginTop="@dimen/_200sdp"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="24/4/2023"
             style="?android:spinnerStyle" />
         <Button
             android:id="@+id/startTimeButton"
@@ -92,7 +91,6 @@
             android:layout_marginTop="@dimen/_200sdp"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="19:00"
             style="?android:spinnerStyle" />
         <TextView
             android:layout_width="match_parent"
@@ -112,7 +110,6 @@
             android:layout_marginTop="@dimen/_245sdp"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="24/4/2023"
             style="?android:spinnerStyle" />
         <Button
             android:id="@+id/endTimeButton"
@@ -123,7 +120,6 @@
             android:layout_marginTop="@dimen/_245sdp"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="22:00"
             style="?android:spinnerStyle" />
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/countSwitch"

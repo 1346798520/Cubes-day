@@ -18,19 +18,26 @@ import java.util.Calendar;
 
 import hk.hku.cs.cubesnote.R;
 import hk.hku.cs.cubesnote.entity.CubeEvent;
+import hk.hku.cs.cubesnote.entity.CubeEventTreemapConfig;
 import hk.hku.cs.cubesnote.utils.FileIO;
-import hk.hku.cs.cubesnote.utils.Jsonfy;
 import hk.hku.cs.cubesnote.utils.PickerFragment;
 
 public class addEvent extends AppCompatActivity {
 
-    private java.util.Calendar selectedStartCalendar = Calendar.getInstance();;
-    private java.util.Calendar selectedEndCalendar = Calendar.getInstance();;
+    private java.util.Calendar selectedStartCalendar;
+    private java.util.Calendar selectedEndCalendar;
     private Boolean isAllDay = false;
     private Boolean isCountingDays = false;
     private Boolean isShownInTreeMap = false;
+    private CubeEventTreemapConfig cubeEventTreemapConfig;
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        cubeEventTreemapConfig = (CubeEventTreemapConfig) data.getParcelableExtra("treemapConfig");
+//        String result = data.getExtras().getString("data");
+//        System.out.println(result);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +55,36 @@ public class addEvent extends AppCompatActivity {
         final EditText eventTitle = (EditText) findViewById(R.id.eventTitle);
         final EditText description = (EditText) findViewById(R.id.description);
 
+        //********************************* Start init time Btn *********************************//
+        selectedStartCalendar = Calendar.getInstance();
+        selectedEndCalendar = Calendar.getInstance();
+        selectedEndCalendar.add(Calendar.HOUR_OF_DAY, 1);
+        startDateButton.setText( getString(
+                        R.string.selected_date,
+                        selectedStartCalendar.get(Calendar.YEAR),
+                        selectedStartCalendar.get(Calendar.MONTH)+1,
+                        selectedStartCalendar.get(Calendar.DATE)));
+        endDateButton.setText( getString(
+                        R.string.selected_date,
+                        selectedEndCalendar.get(Calendar.YEAR),
+                        selectedEndCalendar.get(Calendar.MONTH)+1,
+                        selectedEndCalendar.get(Calendar.DATE)));
+        startTimeButton.setText( getString(
+                        R.string.selected_time,
+                        selectedStartCalendar.get(Calendar.HOUR_OF_DAY),
+                        selectedStartCalendar.get(Calendar.MINUTE)));
+        endTimeButton.setText( getString(
+                        R.string.selected_time,
+                        selectedEndCalendar.get(Calendar.HOUR_OF_DAY),
+                        selectedEndCalendar.get(Calendar.MINUTE)));
+        //*********************************  End init time Btn  *********************************//
+
         treeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(addEvent.this, treemapSet.class);
-                startActivity(intent);
+                // TODO: can deliver default calendar to treemap settings here
+                startActivityForResult(intent, 1);
             }
         });
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -60,46 +92,42 @@ public class addEvent extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(addEvent.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CubeEvent cubeEvent = new CubeEvent();
+                CubeEvent cubeEvent = new CubeEvent(selectedStartCalendar, selectedEndCalendar);
                 cubeEvent.setTitle(eventTitle.getText().toString());
                 cubeEvent.setAllDay(isAllDay);
-                cubeEvent.setSelectedStartCalendar(selectedStartCalendar);
-                cubeEvent.setSelectedEndCalendar(selectedEndCalendar);
                 cubeEvent.setCountingDays(isCountingDays);
                 cubeEvent.setDescription(description.getText().toString());
                 cubeEvent.setShownInTreeMap(isShownInTreeMap);
                 if(isShownInTreeMap) {
-                    // TODO: construct and set CubeEventTreemapConfig
-                    cubeEvent.setTreemapConfig(null);
+                    // TODO: cubeEventTreemapConfig is null
+                    cubeEvent.setTreemapConfig(cubeEventTreemapConfig);
                 }
                 try {
                     System.out.println(cubeEvent.toJson().toString());
                     FileIO.writeJson(getApplicationContext(), cubeEvent.getId(), cubeEvent.toJson());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (JSONException e) {
+                } catch (IOException | JSONException e) {
                     throw new RuntimeException(e);
                 }
-
                 Intent intent = new Intent(addEvent.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
         //********************************* Start input calendar *********************************//
         // TODO: Dealing with End before Start
-        // TODO: Give current Date and Time as default value
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment newFragment = new PickerFragment.DatePickerFragment(
                         (view, year, month, day) -> {
-                            selectedStartCalendar.set(year, month+1, day);
+                            selectedStartCalendar.set(year, month, day);
                             startDateButton.setText(
                                     getString(R.string.selected_date, year, month+1, day));
                         });
@@ -112,7 +140,7 @@ public class addEvent extends AppCompatActivity {
             public void onClick(View v) {
                 DialogFragment newFragment = new PickerFragment.DatePickerFragment(
                         (view, year, month, day) -> {
-                            selectedEndCalendar.set(year, month+1, day);
+                            selectedEndCalendar.set(year, month, day);
                             endDateButton.setText(
                                     getString(R.string.selected_date, year, month+1, day));
                         });
