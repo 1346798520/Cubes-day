@@ -3,14 +3,18 @@ package hk.hku.cs.cubesnote.utils;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
+
+import hk.hku.cs.cubesnote.R;
 
 public class PickerFragment {
 
@@ -75,4 +79,18 @@ public class PickerFragment {
         }
     }
 
+    public static void syncDateButton(Context context, Button btn, Calendar c) {
+        btn.setText( context.getResources().getString(
+                R.string.selected_date,
+                c.get(Calendar.YEAR),
+                c.get(Calendar.MONTH)+1,
+                c.get(Calendar.DATE)));
+    }
+
+    public static void syncTimeButton(Context context, Button btn, Calendar c) {
+        btn.setText( context.getResources().getString(
+                R.string.selected_time,
+                c.get(Calendar.HOUR_OF_DAY),
+                c.get(Calendar.MINUTE)));
+    }
 }

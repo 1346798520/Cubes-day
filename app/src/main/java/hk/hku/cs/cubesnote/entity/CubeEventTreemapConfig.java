@@ -73,14 +73,4 @@ public class CubeEventTreemapConfig  implements Parcelable {
     public void setLinearEmergencyBegin(Calendar linearEmergencyBegin) {
         this.linearEmergencyBegin = linearEmergencyBegin;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel parcel, int i) {
-
-    }
 }

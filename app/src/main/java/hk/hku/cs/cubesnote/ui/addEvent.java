@@ -20,6 +20,7 @@ import hk.hku.cs.cubesnote.R;
 import hk.hku.cs.cubesnote.entity.CubeEvent;
 import hk.hku.cs.cubesnote.entity.CubeEventTreemapConfig;
 import hk.hku.cs.cubesnote.utils.FileIO;
+import hk.hku.cs.cubesnote.utils.Jsonfy;
 import hk.hku.cs.cubesnote.utils.PickerFragment;
 
 public class addEvent extends AppCompatActivity {
@@ -35,9 +36,8 @@ public class addEvent extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         cubeEventTreemapConfig = (CubeEventTreemapConfig) data.getParcelableExtra("treemapConfig");
-//        String result = data.getExtras().getString("data");
-//        System.out.println(result);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,31 +59,25 @@ public class addEvent extends AppCompatActivity {
         selectedStartCalendar = Calendar.getInstance();
         selectedEndCalendar = Calendar.getInstance();
         selectedEndCalendar.add(Calendar.HOUR_OF_DAY, 1);
-        startDateButton.setText( getString(
-                        R.string.selected_date,
-                        selectedStartCalendar.get(Calendar.YEAR),
-                        selectedStartCalendar.get(Calendar.MONTH)+1,
-                        selectedStartCalendar.get(Calendar.DATE)));
-        endDateButton.setText( getString(
-                        R.string.selected_date,
-                        selectedEndCalendar.get(Calendar.YEAR),
-                        selectedEndCalendar.get(Calendar.MONTH)+1,
-                        selectedEndCalendar.get(Calendar.DATE)));
-        startTimeButton.setText( getString(
-                        R.string.selected_time,
-                        selectedStartCalendar.get(Calendar.HOUR_OF_DAY),
-                        selectedStartCalendar.get(Calendar.MINUTE)));
-        endTimeButton.setText( getString(
-                        R.string.selected_time,
-                        selectedEndCalendar.get(Calendar.HOUR_OF_DAY),
-                        selectedEndCalendar.get(Calendar.MINUTE)));
+
+        PickerFragment.syncDateButton(this, startDateButton, selectedStartCalendar);
+        PickerFragment.syncDateButton(this, endDateButton, selectedEndCalendar);
+        PickerFragment.syncTimeButton(this, startTimeButton, selectedStartCalendar);
+        PickerFragment.syncTimeButton(this, endTimeButton, selectedEndCalendar);
         //*********************************  End init time Btn  *********************************//
 
         treeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(addEvent.this, treemapSet.class);
-                // TODO: can deliver default calendar to treemap settings here
+                if (cubeEventTreemapConfig == null) {
+                    intent.putExtra("start", Jsonfy.calenderToString(Calendar.getInstance()));
+                    intent.putExtra("end", Jsonfy.calenderToString(selectedEndCalendar));
+                } else {
+                    // In case of re-open setting page when config is set already.
+                    intent.putExtra("start", Jsonfy.calenderToString(cubeEventTreemapConfig.getStart()));
+                    intent.putExtra("end", Jsonfy.calenderToString(cubeEventTreemapConfig.getEnd()));
+                }
                 startActivityForResult(intent, 1);
             }
         });

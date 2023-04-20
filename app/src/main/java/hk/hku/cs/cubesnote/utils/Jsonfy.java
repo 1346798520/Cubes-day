@@ -1,21 +1,38 @@
 package hk.hku.cs.cubesnote.utils;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import hk.hku.cs.cubesnote.entity.CubeEvent;
 import hk.hku.cs.cubesnote.entity.CubeEventTreemapConfig;
 
 public class Jsonfy {
+    public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     public static String calenderToString(Calendar calendar) {
         Date date = calendar.getTime();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         return dateFormat.format(date);
+    }
+
+    public static Calendar stringToCalendar(String s){
+        Calendar c = Calendar.getInstance();
+        try {
+            c.setTime(Objects.requireNonNull(dateFormat.parse(s)));
+        } catch (ParseException e) {
+            Log.e("Jsonfy", "Try parsing " + s + " to calendar error. Returned current time");
+            return c;
+        }
+        return c;
     }
 
     public static JSONObject toJson(CubeEventTreemapConfig c) throws JSONException {
