@@ -90,8 +90,6 @@ public class addEvent extends AppCompatActivity {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(addEvent.this, MainActivity.class);
-                startActivity(intent);
                 finish();
             }
         });
@@ -111,11 +109,9 @@ public class addEvent extends AppCompatActivity {
                 try {
                     System.out.println(cubeEvent.toJson().toString());
                     FileIO.writeJson(getApplicationContext(), cubeEvent.getId(), cubeEvent.toJson());
-                } catch (IOException | JSONException e) {
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                Intent intent = new Intent(addEvent.this, MainActivity.class);
-                startActivity(intent);
                 finish();
             }
         });

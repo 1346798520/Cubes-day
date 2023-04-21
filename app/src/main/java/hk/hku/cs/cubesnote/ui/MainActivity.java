@@ -18,9 +18,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import hk.hku.cs.cubesnote.utils.FileIO;
+import hk.hku.cs.cubesnote.utils.Jsonfy;
 import squarify.library.*;
 
 import hk.hku.cs.cubesnote.R;
@@ -31,10 +36,13 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton setBtn;
     private Context myContext;
     private int btnIDIndex = 1000;
+    private ArrayList<CubeEvent> eventList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        eventList = FileIO.readAllEvents(getApplicationContext());
         myContext = MainActivity.this;
         setBtn = (ImageButton) findViewById(R.id.setBtn);
         setBtn.setOnClickListener(new View.OnClickListener() {
@@ -52,14 +60,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, addEvent.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
         recordBtn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, addEvent.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
         calendarBtn.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +107,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        switch (requestCode) {
+            case (1): // addEvent, from recordBtn & recordBtn2
+                eventList = FileIO.readAllEvents(getApplicationContext());
+                // TODO: call update Treemap
+                for(CubeEvent e : eventList)
+                    System.out.println(e.toJson());
+                break;
+        }
     }
 
     private List<Integer> drawTreeEvents(Integer height, Integer width,

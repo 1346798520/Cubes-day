@@ -29,7 +29,7 @@ public class CubeEvent {
         this.selectedEndCalendar = end;
     }
 
-    public JSONObject toJson() throws JSONException {
+    public JSONObject toJson() {
         return Jsonfy.toJson(this);
     }
 

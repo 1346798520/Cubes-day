@@ -57,11 +57,11 @@ public class Jsonfy {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id", c.getId());
+            jsonObject.put("title", c.getTitle());
             jsonObject.put("selectedStartCalendar", calenderToString(c.getSelectedStartCalendar()));
             jsonObject.put("selectedEndCalendar", calenderToString(c.getSelectedEndCalendar()));
             jsonObject.put("isAllDay", c.getAllDay());
             jsonObject.put("isCountingDays", c.getCountingDays());
-            jsonObject.put("title", c.getTitle());
             jsonObject.put("Description", c.getDescription());
             jsonObject.put("isShownInTreeMap", c.getShownInTreeMap());
             if (c.getShownInTreeMap())
