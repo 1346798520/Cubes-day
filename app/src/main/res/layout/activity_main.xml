@@ -96,5 +96,15 @@
             android:layout_height="@dimen/_90sdp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/events"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="150dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 </ScrollView>
