@@ -88,7 +88,6 @@
             android:layout_marginTop="@dimen/_172sdp"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="9/4/2023"
             style="?android:spinnerStyle" />
         <Button
             android:id="@+id/sTimeBtn"
@@ -99,7 +98,6 @@
             android:layout_marginTop="@dimen/_172sdp"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="00:00"
             style="?android:spinnerStyle" />
         <TextView
             android:layout_width="match_parent"
@@ -119,7 +117,6 @@
             android:layout_marginTop="@dimen/_210sdp"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="24/4/2023"
             style="?android:spinnerStyle" />
         <Button
             android:id="@+id/eTimeBtn"
@@ -130,9 +127,8 @@
             android:layout_marginTop="@dimen/_210sdp"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="22:00"
             style="?android:spinnerStyle" />
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/treeSwitch"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_55sdp"
@@ -162,7 +158,6 @@
             android:layout_marginTop="@dimen/_293sdp"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="16/4/2023"
             style="?android:spinnerStyle" />
     </RelativeLayout>
 </ScrollView>

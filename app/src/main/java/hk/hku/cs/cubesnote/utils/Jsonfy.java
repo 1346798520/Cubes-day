@@ -20,6 +20,8 @@ public class Jsonfy {
     public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static String calenderToString(Calendar calendar) {
+        if(calendar == null)
+            return null;
         Date date = calendar.getTime();
         return dateFormat.format(date);
     }
@@ -35,30 +37,38 @@ public class Jsonfy {
         return c;
     }
 
-    public static JSONObject toJson(CubeEventTreemapConfig c) throws JSONException {
+    public static JSONObject toJson(CubeEventTreemapConfig c) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("importance", c.getImportance());
-        jsonObject.put("emergency", c.getEmergency());
-        jsonObject.put("start", calenderToString(c.getStart()));
-        jsonObject.put("end", calenderToString(c.getEnd()));
-        jsonObject.put("linearEmergency", c.getLinearEmergency());
-        if (c.getLinearEmergency())
-            jsonObject.put("linearEmergencyBegin", c.getLinearEmergencyBegin());
+        try {
+            jsonObject.put("importance", c.getImportance());
+            jsonObject.put("emergency", c.getEmergency());
+            jsonObject.put("start", calenderToString(c.getStart()));
+            jsonObject.put("end", calenderToString(c.getEnd()));
+            jsonObject.put("linearEmergency", c.getLinearEmergency());
+            if (c.getLinearEmergency())
+                jsonObject.put("linearEmergencyBegin", calenderToString(c.getLinearEmergencyBegin()));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         return jsonObject;
     }
 
-    public static JSONObject toJson(CubeEvent c) throws JSONException {
+    public static JSONObject toJson(CubeEvent c) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", c.getId());
-        jsonObject.put("selectedStartCalendar", calenderToString(c.getSelectedStartCalendar()));
-        jsonObject.put("selectedEndCalendar", calenderToString(c.getSelectedEndCalendar()));
-        jsonObject.put("isAllDay", c.getAllDay());
-        jsonObject.put("isCountingDays", c.getCountingDays());
-        jsonObject.put("title", c.getTitle());
-        jsonObject.put("Description", c.getDescription());
-        jsonObject.put("isShownInTreeMap", c.getShownInTreeMap());
-        if (c.getShownInTreeMap())
-            jsonObject.put("treemapConfig", toJson(c.getTreemapConfig()));
+        try {
+            jsonObject.put("id", c.getId());
+            jsonObject.put("selectedStartCalendar", calenderToString(c.getSelectedStartCalendar()));
+            jsonObject.put("selectedEndCalendar", calenderToString(c.getSelectedEndCalendar()));
+            jsonObject.put("isAllDay", c.getAllDay());
+            jsonObject.put("isCountingDays", c.getCountingDays());
+            jsonObject.put("title", c.getTitle());
+            jsonObject.put("Description", c.getDescription());
+            jsonObject.put("isShownInTreeMap", c.getShownInTreeMap());
+            if (c.getShownInTreeMap())
+                jsonObject.put("treemapConfig", toJson(c.getTreemapConfig()));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         return jsonObject;
     }
 

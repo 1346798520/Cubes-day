@@ -35,7 +35,8 @@ public class addEvent extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        cubeEventTreemapConfig = (CubeEventTreemapConfig) data.getParcelableExtra("treemapConfig");
+        if(data.getStringExtra("action").equals("save"))
+            cubeEventTreemapConfig = (CubeEventTreemapConfig) data.getParcelableExtra("treemapConfig");
     }
 
     @Override
@@ -71,12 +72,17 @@ public class addEvent extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(addEvent.this, treemapSet.class);
                 if (cubeEventTreemapConfig == null) {
-                    intent.putExtra("start", Jsonfy.calenderToString(Calendar.getInstance()));
-                    intent.putExtra("end", Jsonfy.calenderToString(selectedEndCalendar));
+                    CubeEventTreemapConfig defaultConfig = new CubeEventTreemapConfig(
+                            Calendar.getInstance(),
+                            selectedEndCalendar,
+                            Calendar.getInstance()
+                    );
+                    intent.putExtra("treeConfig", defaultConfig);
+                    System.out.println("to Setting:");
+                    System.out.println(defaultConfig.toJson());
                 } else {
                     // In case of re-open setting page when config is set already.
-                    intent.putExtra("start", Jsonfy.calenderToString(cubeEventTreemapConfig.getStart()));
-                    intent.putExtra("end", Jsonfy.calenderToString(cubeEventTreemapConfig.getEnd()));
+                    intent.putExtra("treeConfig", cubeEventTreemapConfig);
                 }
                 startActivityForResult(intent, 1);
             }

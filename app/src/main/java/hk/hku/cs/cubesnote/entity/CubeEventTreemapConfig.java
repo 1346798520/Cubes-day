@@ -2,6 +2,7 @@ package hk.hku.cs.cubesnote.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -25,17 +26,32 @@ public class CubeEventTreemapConfig  implements Parcelable {
         this.emergency = 3;
         this.start = start;
         this.end = end;
-        this.linearEmergency = false;
+        this.linearEmergency = true;
         this.linearEmergencyBegin = linear;
     }
 
     protected CubeEventTreemapConfig(Parcel in) {
+
         importance = in.readInt();
         emergency = in.readInt();
-        start = Jsonfy.stringToCalendar(in.readString());
-        end = Jsonfy.stringToCalendar(in.readString());
-        linearEmergency = in.readByte() != 0;
-        linearEmergencyBegin = linearEmergency ? null : Jsonfy.stringToCalendar(in.readString());
+
+        String st = in.readString();
+        start = Jsonfy.stringToCalendar(st);
+
+        String ed = in.readString();
+        end = Jsonfy.stringToCalendar(ed);
+
+        linearEmergency = in.readByte() == 1;
+
+        if (linearEmergency) {
+            String bg = in.readString();
+            if (bg != null)
+                linearEmergencyBegin = Jsonfy.stringToCalendar(bg);
+            else {
+                Log.e("CubeEventTreeCfg", "Error: got config from intent with linearEmergency=true but linearEmergencyBegin=null. Set linearEmergencyBegin to start time.");
+                linearEmergencyBegin = Jsonfy.stringToCalendar(st);
+            }
+        }
     }
 
     public static final Creator<CubeEventTreemapConfig> CREATOR = new Creator<CubeEventTreemapConfig>() {
@@ -62,10 +78,11 @@ public class CubeEventTreemapConfig  implements Parcelable {
         parcel.writeString(Jsonfy.calenderToString(start));
         parcel.writeString(Jsonfy.calenderToString(end));
         parcel.writeByte((byte) (linearEmergency ? 1 : 0));
-        parcel.writeString(Jsonfy.calenderToString(linearEmergencyBegin));
+        if (linearEmergency)
+            parcel.writeString(Jsonfy.calenderToString(linearEmergencyBegin));
     }
 
-    public JSONObject toJson() throws JSONException {
+    public JSONObject toJson() {
         return Jsonfy.toJson(this);
     }
 
