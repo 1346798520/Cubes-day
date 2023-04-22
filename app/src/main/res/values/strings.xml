@@ -9,4 +9,6 @@
     </string-array>
     <string name="selected_time">%1$d:%2$d</string>
     <string name="selected_date">%1$d/%2$d/%3$d</string>
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="forward"><![CDATA[->]]></string>
 </resources>
