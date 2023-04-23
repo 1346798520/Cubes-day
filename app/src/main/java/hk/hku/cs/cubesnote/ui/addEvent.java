@@ -78,8 +78,6 @@ public class addEvent extends AppCompatActivity {
                             Calendar.getInstance()
                     );
                     intent.putExtra("treeConfig", defaultConfig);
-                    System.out.println("to Setting:");
-                    System.out.println(defaultConfig.toJson());
                 } else {
                     // In case of re-open setting page when config is set already.
                     intent.putExtra("treeConfig", cubeEventTreemapConfig);
@@ -103,7 +101,12 @@ public class addEvent extends AppCompatActivity {
                 cubeEvent.setDescription(description.getText().toString());
                 cubeEvent.setShownInTreeMap(isShownInTreeMap);
                 if(isShownInTreeMap) {
-                    // TODO: cubeEventTreemapConfig is null
+                    if(cubeEventTreemapConfig == null)
+                        cubeEventTreemapConfig = new CubeEventTreemapConfig(
+                                Calendar.getInstance(),
+                                selectedEndCalendar,
+                                Calendar.getInstance()
+                        );
                     cubeEvent.setTreemapConfig(cubeEventTreemapConfig);
                 }
                 try {

@@ -24,8 +24,6 @@ public class FileIO {
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         bufferedWriter.write(json.toString());
         bufferedWriter.close();
-        System.out.println(context.getFilesDir());
-        System.out.println(fname);
     }
 
     public static JSONObject readJsonString(Context context, String fname) throws IOException, JSONException {
