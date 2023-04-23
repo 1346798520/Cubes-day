@@ -1,5 +1,6 @@
 package hk.hku.cs.cubesnote.ui;
 
+import static java.lang.Math.E;
 import static java.lang.Math.round;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,9 +19,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,8 +41,10 @@ import hk.hku.cs.cubesnote.entity.CubeEventTreemapConfig;
 public class MainActivity extends AppCompatActivity {
     private ImageButton setBtn;
     private Context myContext;
-    private int btnIDIndex = 1000;
+
     private ArrayList<CubeEvent> eventList;
+    private ArrayList<CubeEvent> eventListInTree;
+    private ArrayList<Integer> buttonIDList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,15 +85,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        CubeEvent event = null;
-        CubeEventTreemapConfig config = null;
 
         llContentView.post(new Runnable() {
             @Override
             public void run() {
                 Integer width = llContentView.getWidth();
                 Integer height = llContentView.getHeight();
-                drawTreeEvents(height, width, event, config, llContentView);
+                drawTreeEvents(height, width, eventList, llContentView);
             }
         });
     }
@@ -107,24 +113,84 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case (1): // addEvent, from recordBtn & recordBtn2
-                eventList = FileIO.readAllEvents(getApplicationContext());
-                // TODO: call update Treemap
-                for(CubeEvent e : eventList)
-                    System.out.println(e.toJson());
-                break;
+        if (requestCode == 1) { // addEvent, from recordBtn & recordBtn2
+            eventList = FileIO.readAllEvents(getApplicationContext());
+
+            ConstraintLayout llContentView = (ConstraintLayout) this.findViewById(R.id.events);
+            llContentView.post(new Runnable() {
+                @Override
+                public void run() {
+                    Integer width = llContentView.getWidth();
+                    Integer height = llContentView.getHeight();
+                    drawTreeEvents(height, width, eventList, llContentView);
+                }
+            });
+
+
+            // TODO: call update Treemap
+//                for(CubeEvent e : eventList) {
+//                    System.out.println(e.toJson());
+//                }
+//                break;
         }
     }
 
-    private List<Integer> drawTreeEvents(Integer height, Integer width,
-                                         CubeEvent event, CubeEventTreemapConfig config,
+    private void drawTreeEvents(Integer height, Integer width,
+                                         ArrayList<CubeEvent> eventList,
                                          ConstraintLayout llContentView) {
-        List<Integer> btnAddIDs = new ArrayList<>();
+//        FileIO.clearAllEventFiles(getApplicationContext());
+
+        // data preparation
+        int btnIDIndex = 1000;
+        llContentView.removeAllViews();
+        buttonIDList.clear();
+        eventListInTree.clear();
+
+        // if there is any event
+        ImageButton recordBtn = (ImageButton) findViewById(R.id.recordBtn);
+        TextView corner = (TextView) findViewById(R.id.corner);
+        if (eventList.size() == 0) {
+            // recordBtn and corner need to be visible if there is no event
+            recordBtn.setVisibility(View.VISIBLE);
+            recordBtn.setEnabled(true);
+            corner.setVisibility(View.VISIBLE);
+
+            return;
+        }
+
+        // invisible to show the events
+        recordBtn.setVisibility(View.INVISIBLE);
+        recordBtn.setEnabled(false);
+        corner.setVisibility(View.INVISIBLE);
+
+        ArrayList<Float> values = new ArrayList<>();
+        ArrayList<String> eventNames = new ArrayList<>();
+
+        for (CubeEvent event: eventList) {
+            if (event.getTreemapConfig() != null) {
+                // rating value and event names
+                Float emergency = (float) event.getTreemapConfig().getEmergency();
+                Float importance = (float) event.getTreemapConfig().getImportance();
+                String eventName = event.getTitle();
+
+                Float drawingValue = emergency * importance;
+                values.add(drawingValue);
+                eventNames.add(eventName);
+                eventListInTree.add(event);
+            }
+        }
+        // if there is any event to show in treemap
+        if (eventListInTree.size() == 0) {
+            // recordBtn and corner need to be visible if there is no event
+            recordBtn.setVisibility(View.VISIBLE);
+            recordBtn.setEnabled(true);
+            corner.setVisibility(View.VISIBLE);
+
+            return;
+        }
 
         ArrayList<SquarifyRect> rects;  // The rects list will contain geometry for each rectangle to draw
-        ArrayList<Float> values = new ArrayList<Float>(Arrays.asList(50f, 25f, 100f, 10f, 75f)); // Values defining the squarified layout
-        Squarify s = new Squarify(values, 0, 0, width, height);
+        Squarify s = new Squarify(values, 0, 0, width, height);  // get the treemap rectangles
         rects = s.getRects();
 
 
@@ -136,28 +202,26 @@ public class MainActivity extends AppCompatActivity {
             SquarifyRect r = rects.get(i);
             Log.i("test", "Id: " + r.getId() + ", Value: " + round(r.getValue()) + ", x: " + r.getX() + ", y: " + r.getY() + ", Dx:" + r.getDx() + ", Dy: " + r.getDy());
 
+            // define the location and constraint of the button (constraint layout)
             ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams((int)r.getDx(),(int)r.getDy());
             params.leftToLeft = R.id.events;
             params.topToTop = R.id.events;
             params.leftMargin = (int) r.getX();
             params.topMargin = (int) r.getY();
 
-
+            // drawing the button
             Button btnAdd = new Button(MainActivity.this);
             btnAdd.setPadding(0,0,0,0);
             btnAdd.setLayoutParams(params);
-            btnAdd.setText(""+r.getValue());
+            btnAdd.setText(eventNames.get(i));  // text of button
 
 
             btnAdd.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             btnAdd.setId(btnIDIndex);
-            btnAddIDs.add(btnIDIndex);
+            buttonIDList.add(btnIDIndex);
 
             btnIDIndex++;
             llContentView.addView(btnAdd);
         }
-        return btnAddIDs;
-
-
     }
 }
