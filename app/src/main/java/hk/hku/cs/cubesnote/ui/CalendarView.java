@@ -65,7 +65,8 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CalendarView.this, MainActivity.class);
-                startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(intent, 0);
             }
         });
         recordBtn2.setOnClickListener(new View.OnClickListener() {
@@ -156,8 +157,8 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
         TextView emLevel = view.findViewById(R.id.emLevel);
         TextView emLevelText = view.findViewById(R.id.emLevelText);
         if(event.getShownInTreeMap()) {
-            imLevel.setText(event.getTreemapConfig().getImportance());
-            emLevel.setText(event.getTreemapConfig().getEmergency());
+            imLevel.setText(String.valueOf(event.getTreemapConfig().getImportance()));
+            emLevel.setText(String.valueOf(event.getTreemapConfig().getEmergency()));
         } else {
             imLevel.setVisibility(View.INVISIBLE);
             imLevelText.setVisibility(View.INVISIBLE);
