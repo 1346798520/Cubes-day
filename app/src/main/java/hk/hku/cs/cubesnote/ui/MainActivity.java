@@ -143,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
         // data preparation
         int btnIDIndex = 1000;
         llContentView.removeAllViews();
-        buttonIDList.clear();
-        eventListInTree.clear();
+        buttonIDList = new ArrayList<>();
+        eventListInTree = new ArrayList<>();
 
         // if there is any event
         ImageButton recordBtn = (ImageButton) findViewById(R.id.recordBtn);
