@@ -1,13 +1,13 @@
 package hk.hku.cs.cubesnote.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,12 +23,10 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import hk.hku.cs.cubesnote.R;
 import hk.hku.cs.cubesnote.entity.CubeEvent;
 import hk.hku.cs.cubesnote.utils.FileIO;
-import hk.hku.cs.cubesnote.utils.Jsonfy;
 
 public class CalendarView extends AppCompatActivity implements CalendarAdapter.OnItemListener {
     private TextView monthYearText;
@@ -76,13 +74,12 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
             }
         });
     }
-    private void initWidgets()
-    {
+    private void initWidgets() {
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
         monthYearText = findViewById(R.id.monthYearTV);
     }
-    private void setMonthView()
-    {
+
+    private void setMonthView() {
         monthYearText.setText(monthYearFromDate(selectedDate));
         ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
 
@@ -91,8 +88,8 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
-    private ArrayList<String> daysInMonthArray(LocalDate date)
-    {
+
+    private ArrayList<String> daysInMonthArray(LocalDate date) {
         ArrayList<String> daysInMonthArray = new ArrayList<>();
         YearMonth yearMonth = YearMonth.from(date);
         int daysInMonth = yearMonth.lengthOfMonth();
@@ -111,25 +108,24 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
         }
         return  daysInMonthArray;
     }
-    private String monthYearFromDate(LocalDate date)
-    {
+
+    private String monthYearFromDate(LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
         return date.format(formatter);
     }
-    public void previousMonthAction(View view)
-    {
+
+    public void previousMonthAction(View view) {
         selectedDate = selectedDate.minusMonths(1);
         setMonthView();
     }
-    public void nextMonthAction(View view)
-    {
+
+    public void nextMonthAction(View view) {
         selectedDate = selectedDate.plusMonths(1);
         setMonthView();
     }
+
     @Override
-    public void onItemClick(int position, String dayText)
-    {
-        // add event here
+    public void onItemClick(int position, String dayText) {
         if(!dayText.equals("")) {
 //            String message = "Selected Date " + dayText + " " + monthYearFromDate(selectedDate);
 //            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
@@ -142,6 +138,7 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
             displayEventsOfDay(this.getCurrentFocus(), eventsOfDay);
         }
     }
+
     private void initPopWindow(View v) {
         View view = LayoutInflater.from(myContext).inflate(R.layout.popup_window, null, false);
         final PopupWindow popWindow = new PopupWindow(view,
@@ -155,25 +152,37 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
         });
         popWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
     }
+
     private void displayEventsOfDay(View v, ArrayList<CubeEvent> eventsOfDay) {
-//        Log.i("displayEventsOfDay","!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        for(CubeEvent e : eventsOfDay) {
-//            System.out.println(e.toJson());
-            View view = LayoutInflater.from(myContext).inflate(R.layout.popup_window, null, false);
+        LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final ViewGroup eventList = (ViewGroup) inflater.inflate(R.layout.day_event_list, null);
+        int lastViewId = -1;
+        for (int i = 0; i < eventsOfDay.size(); i ++) {
+            View view = inflater.inflate(R.layout.day_event_item, null);
+            view.setId(View.generateViewId());
 
-            final PopupWindow popWindow = new PopupWindow(view,
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-            popWindow.setTouchable(true);
-            popWindow.setTouchInterceptor(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    return false;
-                }
-            });
-            popWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+            TextView title = view.findViewById(R.id.title);
+            title.setText(eventsOfDay.get(i).getTitle());
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+            if (lastViewId != -1) {
+                params.topToTop = lastViewId;
+                params.topMargin = 220;
+            }
+            lastViewId = view.getId();
+            eventList.addView(view, params);
         }
-
+        final PopupWindow popWindow = new PopupWindow(eventList,
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popWindow.setTouchable(true);
+        popWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
+        popWindow.showAtLocation(v, Gravity.BOTTOM, 0, 0);
     }
+
     private void initLeftPopWindow(View v) {
         View view = LayoutInflater.from(myContext).inflate(R.layout.left_menu, null, false);
         final PopupWindow popWindow = new PopupWindow(view,
