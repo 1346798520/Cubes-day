@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,10 +23,14 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import hk.hku.cs.cubesnote.R;
+import hk.hku.cs.cubesnote.entity.CubeEvent;
+import hk.hku.cs.cubesnote.utils.FileIO;
+import hk.hku.cs.cubesnote.utils.Jsonfy;
 
-public class Calendar extends AppCompatActivity implements CalendarAdapter.OnItemListener {
+public class CalendarView extends AppCompatActivity implements CalendarAdapter.OnItemListener {
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
@@ -39,7 +44,7 @@ public class Calendar extends AppCompatActivity implements CalendarAdapter.OnIte
         initWidgets();
         selectedDate = LocalDate.now();
         setMonthView();
-        myContext = Calendar.this;
+        myContext = CalendarView.this;
         popBtn = (ImageButton) findViewById(R.id.popBtn);
         setBtn = (ImageButton) findViewById(R.id.setBtn);
         setBtn.setOnClickListener(new View.OnClickListener() {
@@ -59,14 +64,14 @@ public class Calendar extends AppCompatActivity implements CalendarAdapter.OnIte
         treemapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Calendar.this, MainActivity.class);
+                Intent intent = new Intent(CalendarView.this, MainActivity.class);
                 startActivity(intent);
             }
         });
         recordBtn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Calendar.this, addEvent.class);
+                Intent intent = new Intent(CalendarView.this, addEvent.class);
                 startActivity(intent);
             }
         });
@@ -126,8 +131,15 @@ public class Calendar extends AppCompatActivity implements CalendarAdapter.OnIte
     {
         // add event here
         if(!dayText.equals("")) {
-            String message = "Selected Date " + dayText + " " + monthYearFromDate(selectedDate);
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+//            String message = "Selected Date " + dayText + " " + monthYearFromDate(selectedDate);
+//            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            ArrayList<CubeEvent> eventsOfDay = FileIO.readEventsOfDay(
+                    getApplicationContext(),
+                    selectedDate.getYear(),
+                    selectedDate.getMonth().getValue(),
+                    Integer.parseInt(dayText)
+            );
+            displayEventsOfDay(this.getCurrentFocus(), eventsOfDay);
         }
     }
     private void initPopWindow(View v) {
@@ -142,6 +154,25 @@ public class Calendar extends AppCompatActivity implements CalendarAdapter.OnIte
             }
         });
         popWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+    }
+    private void displayEventsOfDay(View v, ArrayList<CubeEvent> eventsOfDay) {
+//        Log.i("displayEventsOfDay","!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        for(CubeEvent e : eventsOfDay) {
+//            System.out.println(e.toJson());
+            View view = LayoutInflater.from(myContext).inflate(R.layout.popup_window, null, false);
+
+            final PopupWindow popWindow = new PopupWindow(view,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+            popWindow.setTouchable(true);
+            popWindow.setTouchInterceptor(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return false;
+                }
+            });
+            popWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+        }
+
     }
     private void initLeftPopWindow(View v) {
         View view = LayoutInflater.from(myContext).inflate(R.layout.left_menu, null, false);

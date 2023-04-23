@@ -1,6 +1,7 @@
 package hk.hku.cs.cubesnote.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,6 +13,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import hk.hku.cs.cubesnote.entity.CubeEvent;
 
@@ -92,5 +94,40 @@ public class FileIO {
 
     public static void deleteEvent(Context context, CubeEvent event) {
         deleteEvent(context, event.getId());
+    }
+
+    public static ArrayList<CubeEvent> readEventsOfDay(Context context, int year, int month, int day) {
+        Log.i("readEventsOfDay", year + " " + month + " " + day);
+        Calendar st = Calendar.getInstance();
+        st.set(year, month-1, day);
+        st.set(Calendar.HOUR_OF_DAY, 0);
+        st.set(Calendar.MINUTE, 0);
+        Calendar ed = (Calendar) st.clone();
+        ed.add(Calendar.DATE, 1);
+        return readEventsWithin(context, st, ed);
+    }
+
+    public static ArrayList<CubeEvent> readEventsWithin(Context context, Calendar st, Calendar ed) {
+        Log.i("readEventsWithin","!!!st:"+st.getTime());
+        Log.i("readEventsWithin","!!!ed:"+ed.getTime());
+        ArrayList<CubeEvent> eventList = new ArrayList<>();
+        File directory = new File(String.valueOf(context.getFilesDir()));
+        File[] files = directory.listFiles();
+        if (files == null)
+            return eventList;
+        for (File file : files) {
+            try {
+                JSONObject j = readJsonString(context, file.getName());
+                CubeEvent event = Jsonfy.jsonToCubeEvent(j);
+                Log.i("readEventsWithin","!!!Checking: "+event.getSelectedStartCalendar().getTime()+" "+event.getSelectedEndCalendar().getTime());
+                if ( !(event.getSelectedStartCalendar().after(ed) || event.getSelectedStartCalendar().before(st)) ) {
+                    eventList.add(event);
+                    Log.i("readEventsWithin","!!!added");
+                }
+            } catch (IOException | JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return eventList;
     }
 }

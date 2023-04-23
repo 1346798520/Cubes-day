@@ -9,6 +9,8 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
@@ -18,6 +20,14 @@ import hk.hku.cs.cubesnote.entity.CubeEventTreemapConfig;
 
 public class Jsonfy {
     public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    public static Calendar localDateToCalendar(LocalDate localDate) {
+        ZoneId zoneId = ZoneId.systemDefault();
+        Date date = Date.from(localDate.atStartOfDay(zoneId).toInstant());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+    }
 
     public static String calenderToString(Calendar calendar) {
         if(calendar == null)

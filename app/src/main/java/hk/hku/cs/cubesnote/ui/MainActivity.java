@@ -1,6 +1,5 @@
 package hk.hku.cs.cubesnote.ui;
 
-import static java.lang.Math.E;
 import static java.lang.Math.round;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +7,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,22 +19,13 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import hk.hku.cs.cubesnote.utils.FileIO;
-import hk.hku.cs.cubesnote.utils.Jsonfy;
 import squarify.library.*;
 
 import hk.hku.cs.cubesnote.R;
 import hk.hku.cs.cubesnote.entity.CubeEvent;
-import hk.hku.cs.cubesnote.entity.CubeEventTreemapConfig;
 
 public class MainActivity extends AppCompatActivity {
     private ImageButton setBtn;
@@ -81,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         calendarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Calendar.class);
+                Intent intent = new Intent(MainActivity.this, CalendarView.class);
                 startActivity(intent);
             }
         });
