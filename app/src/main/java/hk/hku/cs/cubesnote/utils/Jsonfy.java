@@ -19,7 +19,7 @@ import hk.hku.cs.cubesnote.entity.CubeEvent;
 import hk.hku.cs.cubesnote.entity.CubeEventTreemapConfig;
 
 public class Jsonfy {
-    public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     public static Calendar localDateToCalendar(LocalDate localDate) {
         ZoneId zoneId = ZoneId.systemDefault();

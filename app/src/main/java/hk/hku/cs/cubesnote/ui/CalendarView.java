@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import hk.hku.cs.cubesnote.R;
 import hk.hku.cs.cubesnote.entity.CubeEvent;
 import hk.hku.cs.cubesnote.utils.FileIO;
+import hk.hku.cs.cubesnote.utils.Jsonfy;
 
 public class CalendarView extends AppCompatActivity implements CalendarAdapter.OnItemListener {
     private TextView monthYearText;
@@ -157,12 +158,21 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
         LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final ViewGroup eventList = (ViewGroup) inflater.inflate(R.layout.day_event_list, null);
         int lastViewId = -1;
-        for (int i = 0; i < eventsOfDay.size(); i ++) {
+        for (CubeEvent event : eventsOfDay) {
             View view = inflater.inflate(R.layout.day_event_item, null);
             view.setId(View.generateViewId());
 
             TextView title = view.findViewById(R.id.title);
-            title.setText(eventsOfDay.get(i).getTitle());
+            title.setText(event.getTitle());
+
+            TextView start = view.findViewById(R.id.startInfo);
+            String st = Jsonfy.calenderToString(event.getSelectedStartCalendar());
+            start.setText(st);
+
+            TextView end = view.findViewById(R.id.endInfo);
+            String ed = Jsonfy.calenderToString(event.getSelectedEndCalendar());
+            end.setText(ed);
+
             ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
             if (lastViewId != -1) {
                 params.topToTop = lastViewId;
