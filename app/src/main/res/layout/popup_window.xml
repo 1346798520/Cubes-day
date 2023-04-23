@@ -59,6 +59,7 @@
         android:layout_marginLeft="@dimen/_20sdp"
         android:text="Group Presentation" />
     <TextView
+        android:id="@+id/imLevelText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -77,6 +78,7 @@
         android:textSize="18sp"
         android:text="5"/>
     <TextView
+        android:id="@+id/emLevelText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"

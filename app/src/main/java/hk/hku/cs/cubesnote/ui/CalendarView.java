@@ -1,6 +1,7 @@
 package hk.hku.cs.cubesnote.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +45,7 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
         selectedDate = LocalDate.now();
         setMonthView();
         myContext = CalendarView.this;
-        popBtn = (ImageButton) findViewById(R.id.popBtn);
+//        popBtn = (ImageButton) findViewById(R.id.popBtn);
         setBtn = (ImageButton) findViewById(R.id.setBtn);
         setBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,12 +53,12 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
                 initLeftPopWindow(v);
             }
         });
-        popBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initPopWindow(v);
-            }
-        });
+//        popBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                initPopWindow(v);
+//            }
+//        });
         Button treemapBtn = (Button) findViewById(R.id.treemapBtn);
         ImageButton recordBtn2 = (ImageButton) findViewById(R.id.recordBtn2);
         treemapBtn.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +127,7 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
     }
 
     @Override
-    public void onItemClick(int position, String dayText) {
+    public void onItemClick(View view, int position, String dayText) {
         if(!dayText.equals("")) {
 //            String message = "Selected Date " + dayText + " " + monthYearFromDate(selectedDate);
 //            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
@@ -136,12 +137,33 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
                     selectedDate.getMonth().getValue(),
                     Integer.parseInt(dayText)
             );
-            displayEventsOfDay(this.getCurrentFocus(), eventsOfDay);
+            displayEventsOfDay(view, eventsOfDay);
         }
     }
 
-    private void initPopWindow(View v) {
+    private void initPopWindow(View v, CubeEvent event) {
         View view = LayoutInflater.from(myContext).inflate(R.layout.popup_window, null, false);
+        TextView title = view.findViewById(R.id.title);
+        title.setText(event.getTitle());
+        TextView startInfo = view.findViewById(R.id.startInfo);
+        startInfo.setText(Jsonfy.calenderToString(event.getSelectedStartCalendar()));
+        TextView endInfo = view.findViewById(R.id.endInfo);
+        endInfo.setText(Jsonfy.calenderToString(event.getSelectedEndCalendar()));
+        TextView note = view.findViewById(R.id.note);
+        note.setText(event.getDescription());
+        TextView imLevel = view.findViewById(R.id.imLevel);
+        TextView imLevelText = view.findViewById(R.id.imLevelText);
+        TextView emLevel = view.findViewById(R.id.emLevel);
+        TextView emLevelText = view.findViewById(R.id.emLevelText);
+        if(event.getShownInTreeMap()) {
+            imLevel.setText(event.getTreemapConfig().getImportance());
+            emLevel.setText(event.getTreemapConfig().getEmergency());
+        } else {
+            imLevel.setVisibility(View.INVISIBLE);
+            imLevelText.setVisibility(View.INVISIBLE);
+            emLevel.setVisibility(View.INVISIBLE);
+            emLevelText.setVisibility(View.INVISIBLE);
+        }
         final PopupWindow popWindow = new PopupWindow(view,
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         popWindow.setTouchable(true);
@@ -152,6 +174,8 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
             }
         });
         popWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+        AppCompatImageButton leftBtn = view.findViewById(R.id.leftBtn);
+        leftBtn.setOnClickListener(view1 -> {popWindow.dismiss();});
     }
 
     private void displayEventsOfDay(View v, ArrayList<CubeEvent> eventsOfDay) {
@@ -179,6 +203,12 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
                 params.topMargin = 220;
             }
             lastViewId = view.getId();
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    initPopWindow(v, event);
+                }
+            });
             eventList.addView(view, params);
         }
         final PopupWindow popWindow = new PopupWindow(eventList,

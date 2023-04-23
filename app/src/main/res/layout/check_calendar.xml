@@ -167,12 +167,12 @@
             android:layout_marginTop="@dimen/_150sdp"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_220sdp"/>
-        <ImageButton
-            android:id="@+id/popBtn"
-            android:background="@drawable/direction"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_marginLeft="@dimen/_250sdp"
-            android:layout_marginTop="@dimen/_400sdp"/>
+<!--        <ImageButton-->
+<!--            android:id="@+id/popBtn"-->
+<!--            android:background="@drawable/direction"-->
+<!--            android:layout_width="@dimen/_25sdp"-->
+<!--            android:layout_height="@dimen/_25sdp"-->
+<!--            android:layout_marginLeft="@dimen/_250sdp"-->
+<!--            android:layout_marginTop="@dimen/_400sdp"/>-->
     </RelativeLayout>
 </ScrollView>
