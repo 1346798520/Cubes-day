@@ -7,7 +7,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -200,9 +204,22 @@ public class MainActivity extends AppCompatActivity {
 
             // drawing the button
             Button btnAdd = new Button(MainActivity.this);
-            btnAdd.setPadding(0,0,0,0);
+            btnAdd.setPadding(50,50,50,50);
             btnAdd.setLayoutParams(params);
             btnAdd.setText(eventNames.get(i));  // text of button
+
+            // setting the stroke of the button
+            int strokeWidth = 5;
+            int roundRadius = 15; // 8dp 圆角半径
+            int strokeColor = Color.parseColor("#2E3135");//边框颜色
+            int fillColor = Color.parseColor("#326dff");//内部填充颜色
+
+            GradientDrawable gd = new GradientDrawable();//创建drawable
+            gd.setColor(fillColor);
+            gd.setCornerRadius(roundRadius);
+            gd.setStroke(strokeWidth, strokeColor);
+            btnAdd.setBackgroundDrawable(gd);
+
 
 
             btnAdd.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
