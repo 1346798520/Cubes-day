@@ -12,12 +12,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
+import java.nio.file.SecureDirectoryStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import hk.hku.cs.cubesnote.entity.CubeEvent;
 
-public class FileIO {
+public class FileIO implements Serializable {
     public static void writeJson(Context context, String fname, JSONObject json) throws IOException {
         File file = new File(context.getFilesDir(), fname);
         FileWriter fileWriter = new FileWriter(file);

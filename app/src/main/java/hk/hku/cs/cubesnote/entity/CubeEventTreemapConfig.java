@@ -9,11 +9,12 @@ import androidx.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 import hk.hku.cs.cubesnote.utils.Jsonfy;
 
-public class CubeEventTreemapConfig  implements Parcelable {
+public class CubeEventTreemapConfig  implements Parcelable, Serializable {
     private int importance;
     private int emergency;
     private java.util.Calendar start;

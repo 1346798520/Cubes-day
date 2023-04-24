@@ -1,14 +1,21 @@
 package hk.hku.cs.cubesnote.entity;
 
+import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.UUID;
 
 import hk.hku.cs.cubesnote.utils.Jsonfy;
 
-public class CubeEvent {
+public class CubeEvent implements Serializable{
 
     private String id;
     private java.util.Calendar selectedStartCalendar;
@@ -27,6 +34,19 @@ public class CubeEvent {
         this.isShownInTreeMap = false;
         this.selectedStartCalendar = start;
         this.selectedEndCalendar = end;
+    }
+
+    protected CubeEvent(Parcel in) {
+        id = in.readString();
+        byte tmpIsAllDay = in.readByte();
+        isAllDay = tmpIsAllDay == 0 ? null : tmpIsAllDay == 1;
+        byte tmpIsCountingDays = in.readByte();
+        isCountingDays = tmpIsCountingDays == 0 ? null : tmpIsCountingDays == 1;
+        byte tmpIsShownInTreeMap = in.readByte();
+        isShownInTreeMap = tmpIsShownInTreeMap == 0 ? null : tmpIsShownInTreeMap == 1;
+        title = in.readString();
+        Description = in.readString();
+        treemapConfig = in.readParcelable(CubeEventTreemapConfig.class.getClassLoader());
     }
 
     public JSONObject toJson() {
@@ -105,4 +125,5 @@ public class CubeEvent {
     public void setTreemapConfig(CubeEventTreemapConfig treemapConfig) {
         this.treemapConfig = treemapConfig;
     }
+
 }

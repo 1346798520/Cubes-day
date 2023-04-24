@@ -238,6 +238,18 @@ public class MainActivity extends AppCompatActivity {
             buttonIDList.add(btnIDIndex);
 
             btnIDIndex++;
+
+            btnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("event", eventListInTree.get(r.getId()));
+                    Intent intent = new Intent(MainActivity.this, eventDetail.class);
+                    intent.putExtras(bundle);
+                    startActivityForResult(intent, 2);
+                }
+            });
+
             llContentView.addView(btnAdd);
         }
     }

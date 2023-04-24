@@ -111,6 +111,7 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             style="?android:spinnerStyle" />
+
         <Button
             android:id="@+id/endTimeButton"
             android:layout_width="@dimen/_80sdp"
@@ -155,16 +156,17 @@
             android:textSize="18sp"
             android:hint="Description"
             android:padding="@dimen/_20sdp" />
+
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/treeSwitch"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_55sdp"
             android:layout_marginLeft="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_440sdp"
             android:layout_marginRight="@dimen/_30sdp"
             android:padding="5dp"
-            android:layout_marginTop="@dimen/_440sdp"
-            android:text="Show In Treemap"
             android:switchMinWidth="@dimen/_30sdp"
+            android:text="Show In Treemap"
             android:textSize="18sp"
             android:thumb="@drawable/selector_thumb"
             android:track="@drawable/selector_track" />
@@ -185,5 +187,6 @@
             android:textSize="18sp"
             android:text="Treemap Setting"
             android:padding="@dimen/_15sdp" />
+
     </RelativeLayout>
 </ScrollView>

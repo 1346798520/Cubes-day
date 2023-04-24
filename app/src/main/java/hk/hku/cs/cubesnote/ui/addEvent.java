@@ -6,12 +6,11 @@ import androidx.fragment.app.DialogFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -20,7 +19,6 @@ import hk.hku.cs.cubesnote.R;
 import hk.hku.cs.cubesnote.entity.CubeEvent;
 import hk.hku.cs.cubesnote.entity.CubeEventTreemapConfig;
 import hk.hku.cs.cubesnote.utils.FileIO;
-import hk.hku.cs.cubesnote.utils.Jsonfy;
 import hk.hku.cs.cubesnote.utils.PickerFragment;
 
 public class addEvent extends AppCompatActivity {
@@ -77,10 +75,10 @@ public class addEvent extends AppCompatActivity {
                             selectedEndCalendar,
                             Calendar.getInstance()
                     );
-                    intent.putExtra("treeConfig", defaultConfig);
+                    intent.putExtra("treeConfig", (Parcelable) defaultConfig);
                 } else {
                     // In case of re-open setting page when config is set already.
-                    intent.putExtra("treeConfig", cubeEventTreemapConfig);
+                    intent.putExtra("treeConfig", (Parcelable) cubeEventTreemapConfig);
                 }
                 startActivityForResult(intent, 1);
             }
@@ -194,6 +192,7 @@ public class addEvent extends AppCompatActivity {
         //*********************************   Start input text   *********************************//
         // TODO: Make description field scrollable & larger
         //*********************************    End input text    *********************************//
+
     }
 
 }
