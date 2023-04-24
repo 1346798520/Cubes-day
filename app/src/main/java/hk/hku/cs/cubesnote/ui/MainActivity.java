@@ -213,11 +213,16 @@ public class MainActivity extends AppCompatActivity {
 
             // setting the stroke of the button
             int strokeWidth = 5;
-            int roundRadius = 15; // 8dp 圆角半径
-            int strokeColor = Color.parseColor("#2E3135");//边框颜色
-            int fillColor = Color.parseColor("#326dff");//内部填充颜色
+            int roundRadius = 15; // 8dp
+            int strokeColor = Color.parseColor("#2E3135");  // color of stroke
+            int fillColor = Color.parseColor("#326dff");  // color of background
+            float[] hsvParam = new float[3];
+            Color.colorToHSV(fillColor, hsvParam);
+            hsvParam[1] = hsvParam[1] * (float)(r.getValue() / 25.0);  // adjust the Saturation of color
+            fillColor = Color.HSVToColor(hsvParam);
 
-            GradientDrawable gd = new GradientDrawable();//创建drawable
+
+            GradientDrawable gd = new GradientDrawable();// create drawable
             gd.setColor(fillColor);
             gd.setCornerRadius(roundRadius);
             gd.setStroke(strokeWidth, strokeColor);
