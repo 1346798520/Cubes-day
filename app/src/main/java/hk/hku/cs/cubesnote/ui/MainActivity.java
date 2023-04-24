@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import hk.hku.cs.cubesnote.utils.FileIO;
@@ -160,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
         corner.setVisibility(View.INVISIBLE);
 
         ArrayList<Float> values = new ArrayList<>();
+        ArrayList<Float> importances = new ArrayList<>();
         ArrayList<String> eventNames = new ArrayList<>();
 
         for (CubeEvent event: eventList) {
@@ -171,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Float drawingValue = emergency * importance;
                 values.add(drawingValue);
+                importances.add(importance);
                 eventNames.add(eventName);
                 eventListInTree.add(event);
             }
@@ -209,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
             Button btnAdd = new Button(MainActivity.this);
             btnAdd.setPadding(50,50,50,50);
             btnAdd.setLayoutParams(params);
-            btnAdd.setText(eventNames.get(i));  // text of button
+            btnAdd.setText(eventNames.get(r.getId()));  // text of button
 
             // setting the stroke of the button
             int strokeWidth = 5;
@@ -218,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
             int fillColor = Color.parseColor("#326dff");  // color of background
             float[] hsvParam = new float[3];
             Color.colorToHSV(fillColor, hsvParam);
-            hsvParam[1] = hsvParam[1] * (float)(r.getValue() / 25.0);  // adjust the Saturation of color
+            hsvParam[1] = hsvParam[1] * (float)(importances.get(r.getId()) / 5.0);  // adjust the Saturation of color
             fillColor = Color.HSVToColor(hsvParam);
 
 
