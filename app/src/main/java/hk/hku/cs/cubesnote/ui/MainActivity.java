@@ -107,29 +107,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        updateTreemap();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1) { // addEvent, from recordBtn & recordBtn2
-            eventList = FileIO.readAllEvents(getApplicationContext());
-
-            ConstraintLayout llContentView = (ConstraintLayout) this.findViewById(R.id.events);
-            llContentView.post(new Runnable() {
-                @Override
-                public void run() {
-                    Integer width = llContentView.getWidth();
-                    Integer height = llContentView.getHeight();
-                    drawTreeEvents(height, width, eventList, llContentView);
-                }
-            });
-
-
-            // TODO: call update Treemap
-//                for(CubeEvent e : eventList) {
-//                    System.out.println(e.toJson());
-//                }
-//                break;
+            updateTreemap();
         }
+    }
+
+    private void updateTreemap() {
+        eventList = FileIO.readAllEvents(getApplicationContext());
+
+        ConstraintLayout llContentView = (ConstraintLayout) this.findViewById(R.id.events);
+        llContentView.post(new Runnable() {
+            @Override
+            public void run() {
+                Integer width = llContentView.getWidth();
+                Integer height = llContentView.getHeight();
+                drawTreeEvents(height, width, eventList, llContentView);
+            }
+        });
     }
 
     private void drawTreeEvents(Integer height, Integer width,

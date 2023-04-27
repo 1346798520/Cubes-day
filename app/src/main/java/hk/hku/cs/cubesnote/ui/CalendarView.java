@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -142,7 +143,7 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
         }
     }
 
-    private void initPopWindow(View v, CubeEvent event) {
+    private void initPopWindow(View v, CubeEvent event, PopupWindow parentPw) {
         View view = LayoutInflater.from(myContext).inflate(R.layout.popup_window, null, false);
         TextView title = view.findViewById(R.id.title);
         title.setText(event.getTitle());
@@ -156,7 +157,8 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
         TextView imLevelText = view.findViewById(R.id.imLevelText);
         TextView emLevel = view.findViewById(R.id.emLevel);
         TextView emLevelText = view.findViewById(R.id.emLevelText);
-        if(event.getShownInTreeMap()) {
+
+        if (event.getShownInTreeMap()) {
             imLevel.setText(String.valueOf(event.getTreemapConfig().getImportance()));
             emLevel.setText(String.valueOf(event.getTreemapConfig().getEmergency()));
         } else {
@@ -175,13 +177,26 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
             }
         });
         popWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-        AppCompatImageButton leftBtn = view.findViewById(R.id.leftBtn);
+        ImageButton leftBtn = view.findViewById(R.id.leftBtn);
         leftBtn.setOnClickListener(view1 -> {popWindow.dismiss();});
+        ImageButton pencilBtn = view.findViewById(R.id.pencilBtn);
+        pencilBtn.setOnClickListener(view1 -> {
+            popWindow.dismiss();
+            parentPw.dismiss();
+            Intent intent = new Intent(CalendarView.this, addEvent.class);
+            intent.putExtra("action", "editEvent");
+            intent.putExtra("event", (Parcelable) event);
+            setResult(RESULT_OK, intent);
+            startActivity(intent);
+        });
     }
 
     private void displayEventsOfDay(View v, ArrayList<CubeEvent> eventsOfDay) {
         LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final ViewGroup eventList = (ViewGroup) inflater.inflate(R.layout.day_event_list, null);
+        final PopupWindow popWindow = new PopupWindow(eventList,
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
         int lastViewId = -1;
         for (CubeEvent event : eventsOfDay) {
             View view = inflater.inflate(R.layout.day_event_item, null);
@@ -207,13 +222,11 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    initPopWindow(v, event);
+                    initPopWindow(v, event, popWindow);
                 }
             });
             eventList.addView(view, params);
         }
-        final PopupWindow popWindow = new PopupWindow(eventList,
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         popWindow.setTouchable(true);
         popWindow.setTouchInterceptor(new View.OnTouchListener() {
             @Override

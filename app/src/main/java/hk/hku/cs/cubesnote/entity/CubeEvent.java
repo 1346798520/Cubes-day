@@ -15,7 +15,7 @@ import java.util.UUID;
 
 import hk.hku.cs.cubesnote.utils.Jsonfy;
 
-public class CubeEvent implements Serializable{
+public class CubeEvent implements Parcelable, Serializable{
 
     private String id;
     private java.util.Calendar selectedStartCalendar;
@@ -38,15 +38,48 @@ public class CubeEvent implements Serializable{
 
     protected CubeEvent(Parcel in) {
         id = in.readString();
-        byte tmpIsAllDay = in.readByte();
-        isAllDay = tmpIsAllDay == 0 ? null : tmpIsAllDay == 1;
-        byte tmpIsCountingDays = in.readByte();
-        isCountingDays = tmpIsCountingDays == 0 ? null : tmpIsCountingDays == 1;
-        byte tmpIsShownInTreeMap = in.readByte();
-        isShownInTreeMap = tmpIsShownInTreeMap == 0 ? null : tmpIsShownInTreeMap == 1;
         title = in.readString();
         Description = in.readString();
-        treemapConfig = in.readParcelable(CubeEventTreemapConfig.class.getClassLoader());
+        isAllDay = in.readByte() == 1;
+        isCountingDays = in.readByte() == 1;
+        String start = in.readString();
+        selectedStartCalendar = Jsonfy.stringToCalendar(start);
+        String end = in.readString();
+        selectedEndCalendar = Jsonfy.stringToCalendar(end);
+        isShownInTreeMap = in.readByte() == 1;
+        if (isShownInTreeMap)
+            treemapConfig = in.readParcelable(CubeEventTreemapConfig.class.getClassLoader());
+    }
+
+    public static final Creator<CubeEvent> CREATOR = new Creator<CubeEvent>() {
+        @Override
+        public CubeEvent createFromParcel(Parcel in) {
+            return new CubeEvent(in);
+        }
+
+        @Override
+        public CubeEvent[] newArray(int size) {
+            return new CubeEvent[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(title);
+        parcel.writeString(Description);
+        parcel.writeByte((byte) (isAllDay ? 1 : 0));
+        parcel.writeByte((byte) (isCountingDays ? 1 : 0));
+        parcel.writeString(Jsonfy.calenderToString(selectedStartCalendar));
+        parcel.writeString(Jsonfy.calenderToString(selectedEndCalendar));
+        parcel.writeByte((byte) (isShownInTreeMap ? 1 : 0));
+        if (isShownInTreeMap)
+            parcel.writeParcelable(treemapConfig, i);
     }
 
     public JSONObject toJson() {
@@ -125,5 +158,4 @@ public class CubeEvent implements Serializable{
     public void setTreemapConfig(CubeEventTreemapConfig treemapConfig) {
         this.treemapConfig = treemapConfig;
     }
-
 }

@@ -29,6 +29,8 @@ public class addEvent extends AppCompatActivity {
     private Boolean isCountingDays = false;
     private Boolean isShownInTreeMap = false;
     private CubeEventTreemapConfig cubeEventTreemapConfig;
+    private CubeEvent oldCubeEvent;
+    private boolean isEditingExistEvent = false;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -54,16 +56,42 @@ public class addEvent extends AppCompatActivity {
         final EditText eventTitle = (EditText) findViewById(R.id.eventTitle);
         final EditText description = (EditText) findViewById(R.id.description);
 
-        //********************************* Start init time Btn *********************************//
-        selectedStartCalendar = Calendar.getInstance();
-        selectedEndCalendar = Calendar.getInstance();
-        selectedEndCalendar.add(Calendar.HOUR_OF_DAY, 1);
+        //********************************* Start init Btn text *********************************//
+        Intent parentIntent = getIntent();
+        if(parentIntent.getStringExtra("action").equals("editEvent")) {
+            isEditingExistEvent = true;
+            oldCubeEvent = (CubeEvent) parentIntent.getParcelableExtra("event");
+        }
 
+        if (isEditingExistEvent) {
+            isAllDay = oldCubeEvent.getAllDay();
+            isCountingDays = oldCubeEvent.getCountingDays();
+            isShownInTreeMap = oldCubeEvent.getShownInTreeMap();
+            selectedStartCalendar = oldCubeEvent.getSelectedStartCalendar();
+            selectedEndCalendar = oldCubeEvent.getSelectedEndCalendar();
+            if (isShownInTreeMap)
+                cubeEventTreemapConfig = oldCubeEvent.getTreemapConfig();
+
+            String title = oldCubeEvent.getTitle();
+            if (title != null && !title.isEmpty())
+                eventTitle.setText(title);
+            String desc = oldCubeEvent.getDescription();
+            if (desc != null && !desc.isEmpty())
+                description.setText(desc);
+        } else {
+            selectedStartCalendar = Calendar.getInstance();
+            selectedEndCalendar = Calendar.getInstance();
+            selectedEndCalendar.add(Calendar.HOUR_OF_DAY, 1);
+        }
+
+        isAllDaySwitch.setChecked(isAllDay);
+        isCountingDaysSwitch.setChecked(isCountingDays);
+        isShownInTreeMapSwitch.setChecked(isShownInTreeMap);
         PickerFragment.syncDateButton(this, startDateButton, selectedStartCalendar);
         PickerFragment.syncDateButton(this, endDateButton, selectedEndCalendar);
         PickerFragment.syncTimeButton(this, startTimeButton, selectedStartCalendar);
         PickerFragment.syncTimeButton(this, endTimeButton, selectedEndCalendar);
-        //*********************************  End init time Btn  *********************************//
+        //*********************************  End init Btn text  *********************************//
 
         treeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +120,11 @@ public class addEvent extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CubeEvent cubeEvent = new CubeEvent(selectedStartCalendar, selectedEndCalendar);
+                CubeEvent cubeEvent;
+                if (!isEditingExistEvent)
+                    cubeEvent = new CubeEvent(selectedStartCalendar, selectedEndCalendar);
+                else
+                    cubeEvent = oldCubeEvent;
                 cubeEvent.setTitle(eventTitle.getText().toString());
                 cubeEvent.setAllDay(isAllDay);
                 cubeEvent.setCountingDays(isCountingDays);

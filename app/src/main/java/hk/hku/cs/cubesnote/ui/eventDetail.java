@@ -55,9 +55,7 @@ public class eventDetail extends AppCompatActivity {
             leftBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(eventDetail.this, MainActivity.class);
-                    startActivity(intent);
-
+                    finish();
                 }
             });
 
@@ -79,7 +77,8 @@ public class eventDetail extends AppCompatActivity {
                 toast.setText("Event has been deleted.");
                 toast.show();
                 Intent intent = new Intent(eventDetail.this, MainActivity.class);
-                startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(intent, 0);
             }
         });
         deleteWindow.setNegativeButton("No", new DialogInterface.OnClickListener() {
