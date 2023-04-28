@@ -27,7 +27,7 @@
         <activity android:name=".ui.addEvent" />
         <activity android:name=".ui.CalendarView" />
         <activity android:name=".ui.treemapSet" />
-        <receiver android:name=".entity.widgetProvider"
+        <receiver android:name=".ui.widgetProvider"
             android:exported="true">
         <intent-filter>
             <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>

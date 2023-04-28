@@ -10,14 +10,59 @@
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#2196F3"
+        android:backgroundTint="#03A9F4"
+        android:backgroundTintMode="src_over"
         android:gravity="center"
         android:text="Top-Events"
         android:textSize="24sp" />
 
-    <ImageView
-        android:id="@+id/imageView2"
+    <TextView
+        android:id="@+id/widgetText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/cubes" />
+        android:background="#FFFFFF"
+        android:text=""
+        android:textStyle="bold"
+        android:textColor="#3F51B5" />
+
+    <TextView
+        android:id="@+id/widgetSub1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/widgetText2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:textStyle="bold"
+        android:textColor="#3F51B5"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/widgetSub2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/widgetText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:textStyle="bold"
+        android:textColor="#3F51B5"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/widgetSub3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:text="" />
 
 </LinearLayout>
