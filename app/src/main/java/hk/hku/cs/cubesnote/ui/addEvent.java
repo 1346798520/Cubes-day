@@ -58,10 +58,11 @@ public class addEvent extends AppCompatActivity {
 
         //********************************* Start init Btn text *********************************//
         Intent parentIntent = getIntent();
-//        if(parentIntent.getStringExtra("action").equals("editEvent")) {
-//            isEditingExistEvent = true;
-//            oldCubeEvent = (CubeEvent) parentIntent.getParcelableExtra("event");
-//        }
+        String action = parentIntent.getStringExtra("action");
+        if (action != null && action.equals("editEvent")) {
+            isEditingExistEvent = true;
+            oldCubeEvent = (CubeEvent) parentIntent.getParcelableExtra("event");
+        }
 
         if (isEditingExistEvent) {
             isAllDay = oldCubeEvent.getAllDay();

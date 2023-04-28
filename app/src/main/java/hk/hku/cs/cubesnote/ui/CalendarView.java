@@ -46,18 +46,12 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
         selectedDate = LocalDate.now();
         setMonthView();
         myContext = CalendarView.this;
-//        popBtn = (ImageButton) findViewById(R.id.popBtn);
         setBtn = (ImageButton) findViewById(R.id.setBtn);
-        setBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initLeftPopWindow(v);
-            }
-        });
-//        popBtn.setOnClickListener(new View.OnClickListener() {
+        setBtn.setVisibility(View.INVISIBLE);
+//        setBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                initPopWindow(v);
+//                initLeftPopWindow(v);
 //            }
 //        });
         Button treemapBtn = (Button) findViewById(R.id.treemapBtn);
@@ -237,17 +231,17 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
         popWindow.showAtLocation(v, Gravity.BOTTOM, 0, 0);
     }
 
-    private void initLeftPopWindow(View v) {
-        View view = LayoutInflater.from(myContext).inflate(R.layout.left_menu, null, false);
-        final PopupWindow popWindow = new PopupWindow(view,
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        popWindow.setTouchable(true);
-        popWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
-        popWindow.showAtLocation(v, Gravity.LEFT, 0, 0);
-    }
+//    private void initLeftPopWindow(View v) {
+//        View view = LayoutInflater.from(myContext).inflate(R.layout.left_menu, null, false);
+//        final PopupWindow popWindow = new PopupWindow(view,
+//                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+//        popWindow.setTouchable(true);
+//        popWindow.setTouchInterceptor(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return false;
+//            }
+//        });
+//        popWindow.showAtLocation(v, Gravity.LEFT, 0, 0);
+//    }
 }
