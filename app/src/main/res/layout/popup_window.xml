@@ -106,7 +106,7 @@
         android:layout_marginBottom="@dimen/_20sdp"/>
     <ImageButton
         android:id="@+id/pencilBtn"
-        android:background="@drawable/pencil"
+        android:background="@drawable/trash"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:gravity="right"
