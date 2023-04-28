@@ -32,14 +32,14 @@
         android:layout_height="25dp"
         android:layout_marginLeft="@dimen/_140sdp"
         android:layout_marginTop="@dimen/_60sdp" />
-    <ImageButton
-        android:id="@+id/blackBtn"
-        android:background="@drawable/black_square"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginLeft="@dimen/_180sdp"
-        android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_60sdp" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/blackBtn"-->
+<!--        android:background="@drawable/black_square"-->
+<!--        android:layout_width="25dp"-->
+<!--        android:layout_height="25dp"-->
+<!--        android:layout_marginLeft="@dimen/_180sdp"-->
+<!--        android:layout_marginRight="@dimen/_20sdp"-->
+<!--        android:layout_marginTop="@dimen/_60sdp" />-->
     <Switch
         android:id="@+id/dafSwitch"
         android:layout_width="match_parent"
@@ -66,6 +66,7 @@
         android:track="@drawable/selector_track" />
 
     <TextView
+        android:id="@+id/colorPreview"
         android:layout_width="@dimen/_140sdp"
         android:layout_height="@dimen/_140sdp"
         android:layout_marginLeft="@dimen/_50sdp"

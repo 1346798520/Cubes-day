@@ -12,9 +12,14 @@
         android:theme="@style/Theme.CubesNote"
         tools:targetApi="31">
         <activity
+            android:name=".LeftMenu"
+            android:exported="false" />
+        <activity
+            android:name=".leftMenu"
+            android:exported="false" />
+        <activity
             android:name=".ui.eventDetail"
             android:exported="false" />
-
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
@@ -27,15 +32,17 @@
         <activity android:name=".ui.addEvent" />
         <activity android:name=".ui.CalendarView" />
         <activity android:name=".ui.treemapSet" />
-        <receiver android:name=".entity.widgetProvider"
+
+        <receiver
+            android:name=".entity.widgetProvider"
             android:exported="true">
-        <intent-filter>
-            <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-        </intent-filter>
-        <meta-data
-            android:name="android.appwidget.provider"
-            android:resource="@xml/widget_config" >
-        </meta-data>
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_config" />
         </receiver>
     </application>
 

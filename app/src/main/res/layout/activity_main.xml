@@ -77,8 +77,7 @@
                 android:layout_marginTop="@dimen/_80sdp"
                 android:gravity="right"
                 android:textColor="@color/black"
-                android:textSize="18sp"
-                android:text="Easter Day" />
+                android:textSize="18sp" />
         </LinearLayout>
         <TextView
             android:id="@+id/corner"

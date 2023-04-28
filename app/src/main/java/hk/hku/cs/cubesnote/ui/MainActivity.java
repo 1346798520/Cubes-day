@@ -5,13 +5,14 @@ import static java.lang.Math.round;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,8 +24,10 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import hk.hku.cs.cubesnote.utils.FileIO;
 import squarify.library.*;
@@ -39,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<CubeEvent> eventList;
     private ArrayList<CubeEvent> eventListInTree;
     private ArrayList<Integer> buttonIDList;
+    Integer[] colorPreviews = {R.drawable.red_rec, R.drawable.blue_rec, R.drawable.yellow_rec, R.drawable.green_rec, R.drawable.black_rec};
+    String[] colors = {"#ff4040", "#326dff", "#fce903", "#55b079", "#010b13"};
+    private int colorIndex = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         ImageButton recordBtn = (ImageButton) findViewById(R.id.recordBtn);
         ImageButton recordBtn2 = (ImageButton) findViewById(R.id.recordBtn2);
         Button calendarBtn = (Button) findViewById(R.id.calendarBtn);
+        TextView today = (TextView) findViewById(R.id.datetime);
+        todayDate(today);
 
         ConstraintLayout llContentView = (ConstraintLayout) this.findViewById(R.id.events);
         recordBtn.setOnClickListener(new View.OnClickListener() {
@@ -94,16 +102,18 @@ public class MainActivity extends AppCompatActivity {
     }
     private void initLeftPopWindow(View v) {
         View view = LayoutInflater.from(myContext).inflate(R.layout.left_menu, null, false);
-        final PopupWindow popWindow = new PopupWindow(view,
+        final PopupWindow leftMenu = new PopupWindow(view,
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        popWindow.setTouchable(true);
-        popWindow.setTouchInterceptor(new View.OnTouchListener() {
+
+        leftMenu.setTouchable(true);
+        leftMenu.setTouchInterceptor(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return false;
             }
         });
-        popWindow.showAtLocation(v, Gravity.LEFT, 0, 0);
+        leftMenu.showAtLocation(v, Gravity.LEFT, 0, 0);
+        leftMenuButtons(view);
     }
 
     @Override
@@ -166,18 +176,32 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Float> values = new ArrayList<>();
         ArrayList<Float> importances = new ArrayList<>();
         ArrayList<String> eventNames = new ArrayList<>();
+        ArrayList<Calendar> eventDays = new ArrayList<>();
+        ArrayList<Boolean> isCountDown = new ArrayList<>();
 
         for (CubeEvent event: eventList) {
             if (event.getTreemapConfig() != null) {
                 // rating value and event names
-                Float emergency = (float) event.getTreemapConfig().getEmergency();
-                Float importance = (float) event.getTreemapConfig().getImportance();
+                float emergency = (float) event.getTreemapConfig().getEmergency();
+                float importance = (float) event.getTreemapConfig().getImportance();
+                Calendar startDay = event.getTreemapConfig().getStart();
+                Calendar endDay = event.getTreemapConfig().getEnd();
+                Boolean linearEmergency = event.getTreemapConfig().getLinearEmergency();
+                Boolean countDown = event.getCountingDays();
                 String eventName = event.getTitle();
 
+                if (linearEmergency) {
+                    int leftDays = daysBetween(endDay);
+                    int totalDays = daysBetween(startDay, endDay);
+                    float factor = 1.0f - (float) leftDays / (float) totalDays;
+                    emergency = leftDays == 0? 5 : emergency + (5 - emergency) * factor;
+                }
                 Float drawingValue = emergency * importance;
                 values.add(drawingValue);
                 importances.add(importance);
                 eventNames.add(eventName);
+                eventDays.add(endDay);
+                isCountDown.add(countDown);
                 eventListInTree.add(event);
             }
         }
@@ -215,13 +239,18 @@ public class MainActivity extends AppCompatActivity {
             Button btnAdd = new Button(MainActivity.this);
             btnAdd.setPadding(50,50,50,50);
             btnAdd.setLayoutParams(params);
-            btnAdd.setText(eventNames.get(r.getId()));  // text of button
+            String leftDay = "";
+            if (isCountDown.get(r.getId())){
+                leftDay = "\n" + daysBetween(eventDays.get(r.getId())) + " Days Left";
+            }
+            btnAdd.setText(eventNames.get(r.getId()) +leftDay);  // text of button
+
 
             // setting the stroke of the button
             int strokeWidth = 5;
             int roundRadius = 15; // 8dp
             int strokeColor = Color.parseColor("#2E3135");  // color of stroke
-            int fillColor = Color.parseColor("#326dff");  // color of background
+            int fillColor = Color.parseColor(colors[colorIndex]);  // color of background
             float[] hsvParam = new float[3];
             Color.colorToHSV(fillColor, hsvParam);
             hsvParam[1] = hsvParam[1] * (float)(importances.get(r.getId()) / 5.0);  // adjust the Saturation of color
@@ -255,5 +284,86 @@ public class MainActivity extends AppCompatActivity {
 
             llContentView.addView(btnAdd);
         }
+
+    }
+    private void todayDate(TextView today) {
+        long time=System.currentTimeMillis();
+        Date date=new Date(time);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy EEEE");
+        String str = sdf.format(date);
+        today.setText(str);
+    }
+    private static int daysBetween(Calendar targetDay){
+        Calendar cal = Calendar.getInstance();
+        long time1 = cal.getTimeInMillis();
+        long time2 = targetDay.getTimeInMillis();
+        long between_days=(time2-time1)/(1000*3600*24);
+        if (between_days < 0) {
+            return 0;
+        }
+
+        return Integer.parseInt(String.valueOf(between_days));
+    }
+    private static int daysBetween(Calendar startDay, Calendar targetDay){
+        long time1 = startDay.getTimeInMillis();
+        long time2 = targetDay.getTimeInMillis();
+        long between_days=(time2-time1)/(1000*3600*24);
+
+        return Integer.parseInt(String.valueOf(between_days));
+    }
+
+    private void leftMenuButtons(View view) {
+        ImageButton redBtn = (ImageButton) view.findViewById(R.id.redBtn);
+        ImageButton blueBtn = (ImageButton) view.findViewById(R.id.blueBtn);
+        ImageButton yellowBtn = (ImageButton) view.findViewById(R.id.yellowBtn);
+        ImageButton greenBtn = (ImageButton) view.findViewById(R.id.greenBtn);
+//        ImageButton blackBtn = (ImageButton) view.findViewById(R.id.blackBtn);
+        TextView colorPreview = (TextView) view.findViewById(R.id.colorPreview);
+
+        redBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("test", "I've been clicked.");
+                changeColor(0, colorPreview);
+            }
+        });
+        blueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeColor(1, colorPreview);
+            }
+        });
+        yellowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeColor(2, colorPreview);
+            }
+        });
+        greenBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeColor(3, colorPreview);
+            }
+        });
+//        blackBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                changeColor(4, colorPreview);
+//            }
+//        });
+    }
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void changeColor(Integer i, TextView colorPreview) {
+        colorPreview.setBackground(getDrawable(colorPreviews[i]));
+        colorIndex = i;
+        ConstraintLayout llContentView = (ConstraintLayout) this.findViewById(R.id.events);
+        llContentView.post(new Runnable() {
+            @Override
+            public void run() {
+                Integer width = llContentView.getWidth();
+                Integer height = llContentView.getHeight();
+                drawTreeEvents(height, width, eventList, llContentView);
+            }
+        });
     }
 }
