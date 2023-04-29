@@ -6,7 +6,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -183,6 +185,12 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
             setResult(RESULT_OK, intent);
             startActivity(intent);
         });
+        ImageButton trashBtn = view.findViewById(R.id.trashBtn);
+        trashBtn.setOnClickListener(view12 -> {
+            deleteConfirm(event.getId());
+            popWindow.dismiss();
+            parentPw.dismiss();
+        });
     }
 
     private void displayEventsOfDay(View v, ArrayList<CubeEvent> eventsOfDay) {
@@ -244,4 +252,28 @@ public class CalendarView extends AppCompatActivity implements CalendarAdapter.O
 //        });
 //        popWindow.showAtLocation(v, Gravity.LEFT, 0, 0);
 //    }
+    public void deleteConfirm (String eventId) {
+        AlertDialog.Builder deleteWindow = new AlertDialog.Builder(this);
+        deleteWindow.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                FileIO.deleteEvent(getApplicationContext(), eventId);
+                Toast toast= new Toast(getApplicationContext());
+                toast.setText("Event has been deleted.");
+                toast.show();
+                Intent intent = new Intent(getApplicationContext(), CalendarView.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(intent, 0);
+            }
+        });
+        deleteWindow.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        deleteWindow.setMessage("Delete the event?");
+        deleteWindow.setTitle("Warning");
+        deleteWindow.show();
+    }
 }

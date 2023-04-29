@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -37,6 +38,7 @@ public class eventDetail extends AppCompatActivity {
         TextView emLevel = (TextView) findViewById(R.id.emLevel);
         ImageButton leftBtn = (ImageButton) findViewById(R.id.leftBtn);
         ImageButton pencilBtn = (ImageButton) findViewById(R.id.pencilBtn);
+        ImageButton trashBtn = (ImageButton) findViewById(R.id.trashBtn);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -62,11 +64,30 @@ public class eventDetail extends AppCompatActivity {
             pencilBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent intent = new Intent(eventDetail.this, addEvent.class);
+                    intent.putExtra("action", "editEvent");
+                    intent.putExtra("event", (Parcelable) cube);
+                    setResult(RESULT_OK, intent);
+                    startActivityForResult(intent,1);
+                }
+            });
+
+            trashBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     deleteConfirm(cube.getId());
                 }
             });
         }
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) { // addEvent (edit), from pencilBtn
+            finish();
+        }
+    }
+
     public void deleteConfirm (String eventId) {
         AlertDialog.Builder deleteWindow = new AlertDialog.Builder(this);
         deleteWindow.setPositiveButton("Yes", new DialogInterface.OnClickListener() {

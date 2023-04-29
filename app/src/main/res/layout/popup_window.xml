@@ -106,12 +106,22 @@
         android:layout_marginBottom="@dimen/_20sdp"/>
     <ImageButton
         android:id="@+id/pencilBtn"
+        android:background="@drawable/pencil"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:gravity="right"
+        android:layout_marginTop="@dimen/_290sdp"
+        android:layout_marginLeft="@dimen/_160sdp"
+        android:layout_marginRight="@dimen/_65sdp"
+        android:layout_marginBottom="@dimen/_20sdp"/>
+    <ImageButton
+        android:id="@+id/trashBtn"
         android:background="@drawable/trash"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:gravity="right"
         android:layout_marginTop="@dimen/_290sdp"
-        android:layout_marginLeft="@dimen/_200sdp"
+        android:layout_marginLeft="@dimen/_198sdp"
         android:layout_marginRight="@dimen/_25sdp"
         android:layout_marginBottom="@dimen/_20sdp"/>
 </RelativeLayout>
